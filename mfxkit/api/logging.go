@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"time"
 
-	log "github.com/mainflux/mainflux/logger"
+	log "github.com/MainfluxLabs/mainflux/logger"
 	"github.com/mainflux/mfxkit/mfxkit"
 )
 

@@ -6,7 +6,7 @@ package http
 import (
 	"net/http"
 
-	"github.com/mainflux/mainflux"
+	"github.com/MainfluxLabs/mainflux"
 )
 
 var _ mainflux.Response = (*pingRes)(nil)

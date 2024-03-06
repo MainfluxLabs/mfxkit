@@ -1,0 +1,181 @@
+// Copyright (c) Mainflux
+// SPDX-License-Identifier: Apache-2.0
+
+syntax = "proto3";
+
+package mainflux;
+
+import "google/protobuf/empty.proto";
+
+service ThingsService {
+    rpc GetConnByKey(ConnByKeyReq) returns (ConnByKeyRes) {}
+    rpc IsChannelOwner(ChannelOwnerReq) returns (google.protobuf.Empty) {}
+    rpc Identify(Token) returns (ThingID) {}
+    rpc GetGroupsByIDs(GroupsReq) returns (GroupsRes) {}
+}
+
+service UsersService {
+    rpc GetUsersByIDs(UsersByIDsReq) returns (UsersRes) {}
+    rpc GetUsersByEmails(UsersByEmailsReq) returns (UsersRes) {}
+}
+
+service AuthService {
+    rpc Issue(IssueReq) returns (Token) {}
+    rpc Identify(Token) returns (UserIdentity) {}
+    rpc Authorize(AuthorizeReq) returns (google.protobuf.Empty) {}
+    rpc AddPolicy(PolicyReq) returns (google.protobuf.Empty) {}
+    rpc Assign(Assignment) returns (google.protobuf.Empty) {}
+    rpc Members(MembersReq) returns (MembersRes) {}
+    rpc AssignRole(AssignRoleReq) returns (google.protobuf.Empty) {}
+    rpc RetrieveRole(RetrieveRoleReq) returns (RetrieveRoleRes) {}
+}
+
+message ConnByKeyReq {
+    string key  = 1;
+}
+
+message ConnByKeyRes {
+    string  channelID = 1;
+    string  thingID   = 2;
+    Profile profile   = 3;
+}
+
+message Profile {
+    string    contentType = 1;
+    TimeField timeField   = 2;
+    Writer    writer      = 3;
+    Notifier  notifier    = 4;
+}
+
+message Writer {
+    bool retain               = 1;
+    repeated string subtopics = 2;
+}
+
+message Notifier {
+    string protocol           = 1;
+    repeated string subtopics = 2;
+    repeated string contacts  = 3;
+}
+
+message TimeField {
+    string name     = 1;
+    string format   = 2;
+    string location = 3;
+}
+
+message ChannelOwnerReq {
+    string owner  = 1;
+    string chanID = 2;
+}
+
+message ThingID {
+    string value = 1;
+}
+
+message ChannelID {
+    string value = 1;
+}
+
+// If a token is not carrying any information itself, the type
+// field can be used to determine how to validate the token.
+// Also, different tokens can be encoded in different ways.
+message Token {
+    string value = 1;
+}
+
+message UserIdentity {
+    string id    = 1;
+    string email = 2;
+}
+
+message IssueReq {
+    string id    = 1;
+    string email = 2;
+    uint32 type  = 3;
+}
+
+message AuthorizeReq {
+    string token   = 1;
+    string object  = 2;
+    string subject = 3;
+    string action  = 4;
+}
+
+message AuthorizeRes {
+    bool authorized = 1;
+}
+
+message PolicyReq {
+    string token    = 1;
+    string policy   = 2;
+    string subject  = 3;
+    string object   = 4;
+}
+
+message Assignment {
+    string token    = 1;
+    string groupID  = 2;
+    string memberID = 3;
+}
+
+message MembersReq {
+    string token    = 1;
+    string groupID  = 2;
+    uint64 offset   = 3;
+    uint64 limit    = 4;
+    string type     = 5;
+}
+
+message MembersRes {
+    uint64 total            = 1;
+    uint64 offset           = 2;
+    uint64 limit            = 3;
+    string type             = 4;
+    repeated string members = 5;
+}
+
+message User {
+	string id       = 1;
+	string email    = 2;
+	string status   = 3;
+}
+
+message UsersByEmailsReq {
+    repeated string emails = 1;
+}
+
+message UsersByIDsReq {
+    repeated string ids = 1;
+}
+
+message UsersRes {
+    repeated User users = 1;
+}
+
+message Group {
+    string id          = 1;
+    string ownerID     = 2;
+    string name        = 3;
+    string description = 4;
+}
+
+message GroupsReq {
+    repeated string ids = 1;
+}
+
+message GroupsRes {
+    repeated Group groups = 1;
+}
+
+message AssignRoleReq {
+    string id = 1;
+    string role = 2;
+}
+
+message RetrieveRoleReq {
+    string id = 1;
+}
+message RetrieveRoleRes {
+    string role = 1;
+}
