@@ -17,8 +17,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/mainflux/mainflux"
-	"github.com/mainflux/mainflux/logger"
+	"github.com/MainfluxLabs/mainflux"
+	"github.com/MainfluxLabs/mainflux/logger"
 	"github.com/mainflux/mfxkit/mfxkit"
 	"github.com/mainflux/mfxkit/mfxkit/api"
 	mfxkithttpapi "github.com/mainflux/mfxkit/mfxkit/api/mfxkit/http"
