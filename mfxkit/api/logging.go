@@ -10,7 +10,7 @@ import (
 	"time"
 
 	log "github.com/MainfluxLabs/mainflux/logger"
-	"github.com/mainflux/mfxkit/mfxkit"
+	"github.com/MainfluxLabs/mfxkit/mfxkit"
 )
 
 var _ mfxkit.Service = (*loggingMiddleware)(nil)

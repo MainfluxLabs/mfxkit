@@ -1,4 +1,4 @@
-module github.com/mainflux/mfxkit
+module github.com/MainfluxLabs/mfxkit
 
 go 1.16
 
