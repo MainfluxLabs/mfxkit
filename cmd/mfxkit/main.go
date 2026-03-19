@@ -10,7 +10,7 @@ package main
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
+
 	"log"
 	"net/http"
 	"os"
@@ -61,7 +61,7 @@ func main() {
 
 	logger, err := logger.New(os.Stdout, cfg.logLevel)
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatalf("%s", err)
 	}
 
 	mfxkitTracer, mfxkitCloser := initJaeger("mfxkit", cfg.jaegerURL, logger)
@@ -73,7 +73,7 @@ func main() {
 	go startHTTPServer(mfxkithttpapi.MakeHandler(mfxkitTracer, svc), cfg.httpPort, cfg, logger, errs)
 
 	go func() {
-		c := make(chan os.Signal)
+		c := make(chan os.Signal, 1)
 		signal.Notify(c, syscall.SIGINT)
 		errs <- fmt.Errorf("%s", <-c)
 	}()
@@ -95,7 +95,7 @@ func loadConfig() config {
 
 func initJaeger(svcName, url string, logger logger.Logger) (opentracing.Tracer, io.Closer) {
 	if url == "" {
-		return opentracing.NoopTracer{}, ioutil.NopCloser(nil)
+		return opentracing.NoopTracer{}, io.NopCloser(nil)
 	}
 
 	tracer, closer, err := jconfig.Configuration{
